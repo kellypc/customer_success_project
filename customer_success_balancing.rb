@@ -1,3 +1,5 @@
+require 'byebug'
+
 class CustomerSuccessBalancing
   attr_accessor :customer_success, :customers, :away_customer_success, :available_customer_success, :balanced_list
 
@@ -12,6 +14,7 @@ class CustomerSuccessBalancing
   def execute
     remove_away_customer_success
     @balanced_list = balance_customer_by_customer_success
+    sort_customers_success_by_customers
     customer_success_with_more_customers
   end
 
@@ -27,7 +30,7 @@ class CustomerSuccessBalancing
     @customers
   end
 
-  def customer_success_with_more_customers    
+  def sort_customers_success_by_customers    
     @available_customer_success.each do |customer_success|
       customer_success[:customers_size] = 0
       @balanced_list.each do |customer|
@@ -37,7 +40,7 @@ class CustomerSuccessBalancing
         end
       end
     end
-    @customer_success.sort_by!{ |k| k["customers"]}.first[:id]
+    @customer_success.sort_by!{ |k| k["customers"]}
   end
 
   def remove_away_customer_success
@@ -46,5 +49,13 @@ class CustomerSuccessBalancing
         @available_customer_success << cs
       end
     end
+  end
+
+  def customer_success_with_more_customers
+    tie_between_customer_succcess ? 0 : @customer_success[0][:id]
+  end
+
+  def tie_between_customer_succcess
+    @available_customer_success[0][:customers_size] == @available_customer_success[1][:customers_size]
   end
 end
