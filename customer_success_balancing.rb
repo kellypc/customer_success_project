@@ -33,14 +33,16 @@ class CustomerSuccessBalancing
   def sort_customers_success_by_customers    
     @available_customer_success.each do |customer_success|
       customer_success[:customers] = []
+      customer_success[:customers_size] = 0
       @balanced_list.each do |customer|
         next if customer[:customer_success].nil? # Clientes podem ficar sem ser atendidos
         if customer_success[:id] == customer[:customer_success][:id]
           customer_success[:customers] << customer
+          customer_success[:customers_size] += 1
         end
       end
     end
-    @customer_success.sort_by!{ |k| k["customers"]}
+    @available_customer_success.sort_by!{ |k| k[:customers].size}.reverse!
   end
 
   def remove_away_customer_success
@@ -52,7 +54,7 @@ class CustomerSuccessBalancing
   end
 
   def customer_success_with_more_customers
-    tie_between_customer_succcess ? 0 : @customer_success[0][:id]
+    tie_between_customer_succcess ? 0 : @available_customer_success[0][:id]
   end
 
   def tie_between_customer_succcess
