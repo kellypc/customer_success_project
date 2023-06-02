@@ -76,13 +76,25 @@ class CustomerSuccessBalancingTests < Minitest::Test
     assert_equal 1, balancer.execute
   end
 
-  def tie_scenario_should_return_zero
+  def test_tie_scenario_should_return_zero
     balancer = CustomerSuccessBalancing.new(
       build_scores([15, 80]),
       build_scores([60, 40, 95, 10, 12]),
       []
     )
     assert_equal 0, balancer.execute
+  end
+
+  def test_error_if_customer_success_id_more_than_1_000
+    balancer = CustomerSuccessBalancing.new(
+      [{id: 1, score: 60}, { id: 1500, score: 20 }],
+      [],
+      []
+    )
+
+    assert_raises ArgumentError do  
+      balancer.execute
+    end
   end
 
   private

@@ -12,12 +12,16 @@ class CustomerSuccessBalancing
   end
 
   def execute
-    remove_away_customer_success
-    @balanced_list = balance_customer_by_customer_success
-    sort_customers_success_by_customers
-    customer_success_with_more_customers
+    if valid_id_of_customer_success
+      remove_away_customer_success
+      @balanced_list = balance_customer_by_customer_success
+      sort_customers_success_by_customers
+      customer_success_with_more_customers
+    else
+      0
+    end
   end
-
+  
   private
 
   def balance_customer_by_customer_success
@@ -56,6 +60,13 @@ class CustomerSuccessBalancing
 
   def customer_success_with_more_customers
     tie_between_customer_succcess ? 0 : @available_customer_success[0][:id]
+  end
+
+  def valid_id_of_customer_success
+    if @customer_success.any?{|x| x[:id] > 1_000 }
+      raise ArgumentError.new(message: 'Customer Success ID must be between 0 and 1000')
+    end
+    true
   end
 
   def tie_between_customer_succcess
