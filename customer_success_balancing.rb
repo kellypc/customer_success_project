@@ -1,21 +1,22 @@
 class CustomerSuccessBalancing
-  attr_accessor :customer_success, :customers, :away_customer_success, :available_customer_success
+  attr_accessor :customer_success, :customers, :away_customer_success, :available_customer_success, :balanced_list
 
   def initialize(customer_success, customers, away_customer_success)
     @customer_success = customer_success
     @customers = customers
     @away_customer_success = away_customer_success
     @available_customer_success = []
+    @balanced_list = []
   end
 
   def execute
     remove_away_customer_success
-    customers_list = balance_customer_by_customer_success
-    return customer_success_with_more_customers(customers_list)
+    @balanced_list = balance_customer_by_customer_success
+    customer_success_with_more_customers
   end
 
   private
-  
+
   def balance_customer_by_customer_success
     @customers.each do |customer|
       @available_customer_success.each do |customer_success|
@@ -26,10 +27,11 @@ class CustomerSuccessBalancing
     @customers
   end
 
-  def customer_success_with_more_customers(customers_list)    
+  def customer_success_with_more_customers    
     @available_customer_success.each do |customer_success|
       customer_success[:customers_size] = 0
-      customers_list.each do |customer|
+      @balanced_list.each do |customer|
+        next if customer[:customer_success].nil? # Clientes podem ficar sem ser atendidos
         if customer_success[:id] == customer[:customer_success][:id]
           customer_success[:customers_size] += 1
         end
