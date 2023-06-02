@@ -24,7 +24,9 @@ class CustomerSuccessBalancing
     @customers.each do |customer|
       @available_customer_success.each do |customer_success|
         next if customer[:score] > customer_success[:score]
-        customer[:customer_success] = customer_success
+        if customer[:customer_success].nil?
+          customer[:customer_success] = customer_success
+        end
       end
     end    
     @customers
@@ -38,7 +40,6 @@ class CustomerSuccessBalancing
         next if customer[:customer_success].nil? # Clientes podem ficar sem ser atendidos
         if customer_success[:id] == customer[:customer_success][:id]
           customer_success[:customers] << customer
-          customer_success[:customers_size] += 1
         end
       end
     end
