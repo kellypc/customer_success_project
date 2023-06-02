@@ -1,5 +1,3 @@
-require 'byebug'
-
 class CustomerSuccessBalancing
   attr_accessor :customer_success, :customers, :away_customer_success, :available_customer_success, :balanced_list
 

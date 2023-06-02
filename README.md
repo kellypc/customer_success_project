@@ -24,7 +24,7 @@ A equipe de engenharia da RDStation tem alguns princípios onde baseamos nosso t
 
 Portanto, para nós é mais importante um código de fácil leitura do que um que utilize recursos complexos e/ou desnecessários.
 
-O que gostariamos de ver:
+#### O que gostariamos de ver:
 
 O código deve ser fácil de ler. Clean Code pode te ajudar
 Notas gerais e informações sobre a versão da linguagem e outras informações importantes para executar seu código.
