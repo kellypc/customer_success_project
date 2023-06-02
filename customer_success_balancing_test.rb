@@ -88,7 +88,19 @@ class CustomerSuccessBalancingTests < Minitest::Test
   def test_error_if_customer_success_id_more_than_1_000
     balancer = CustomerSuccessBalancing.new(
       [{id: 1, score: 60}, { id: 1500, score: 20 }],
-      [],
+      [{id: 1, score: 3}, {id: 2, score: 10}],
+      []
+    )
+
+    assert_raises ArgumentError do  
+      balancer.execute
+    end
+  end
+
+  def test_error_if_customer_success_score_more_than_10_000
+    balancer = CustomerSuccessBalancing.new(
+      [{id: 1, score: 60}, { id: 2, score: 20_000 }],
+      [{id: 1, score: 3}, {id: 2, score: 10}],
       []
     )
 

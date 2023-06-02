@@ -66,6 +66,9 @@ class CustomerSuccessBalancing
     if @customer_success.any?{|x| x[:id] > 1_000 }
       raise ArgumentError.new(message: 'Customer Success ID must be between 0 and 1.000')
     end
+    if @customer_success.any?{|x| x[:score] > 10_000 }
+      raise ArgumentError.new(message: 'Customer Success ID must be between 0 and 10.000')
+    end
     true
   end
 
